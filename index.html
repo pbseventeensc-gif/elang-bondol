@@ -443,7 +443,7 @@ appId: "1:1028869939674:web:7b51fa4af47fe56059e0e3"
             btn.addEventListener('click', () => {
                 filterBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active');
                 const filterValue = btn.getAttribute('data-filter'); const items = document.querySelectorAll('.gallery-item');
-                items.forEach(item => { item.style.display = (filterValue === 'all' || item.getAttribute('data-tag'] === filterValue) ? 'block' : 'none'; });
+                items.forEach(item => { item.style.display = (filterValue === 'all' || item.getAttribute('data-tag') === filterValue) ? 'block' : 'none'; });
             });
         });
 
