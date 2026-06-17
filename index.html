@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELANG BONDOL - Cyber Bikers Portal</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#060913">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- DESIGN SYSTEM & VARIABLES --- */
+        :root {
+            --bg-dark: #060913; --bg-card: rgba(10, 20, 38, 0.5);
+            --neon-blue: #00f0ff; --neon-cyan: #00ffcc; --neon-magenta: #ff0066; --neon-yellow: #ffcc00;
+            --text-light: #f0f4f8; --text-gray: #8a99ad;
+            --border-glow: rgba(0, 240, 255, 0.2); --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(0, 255, 204, 0.05) 0%, transparent 40%);
+            color: var(--text-light); font-family: 'Rajdhani', sans-serif; font-size: 18px; overflow-x: hidden; line-height: 1.25;
+        }
+
+        h1, h2, h3, .brand-logo { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 60px 0; }
+
+        .glass-card { background: var(--bg-card); backdrop-filter: blur(12px); border: 1px solid var(--border-glow); border-radius: 12px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); transition: var(--transition); position: relative; }
+        .glass-card:hover { border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); transform: translateY(-5px); }
+
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 50px; text-transform: uppercase; background: linear-gradient(45deg, var(--neon-blue), var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 10px rgba(0, 240, 255, 0.2); }
+        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--neon-cyan); margin: 10px auto 0; box-shadow: 0 0 10px var(--neon-cyan); }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 28px; font-family: 'Orbitron', sans-serif; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; border-radius: 6px; transition: var(--transition); cursor: pointer; border: none; }
+        .btn-primary { background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue); box-shadow: inset 0 0 8px rgba(0, 240, 255, 0.2), 0 0 8px rgba(0, 240, 255, 0.2); }
+        .btn-primary:hover { background: var(--neon-blue); color: var(--bg-dark); box-shadow: 0 0 25px var(--neon-blue); }
+        .btn-secondary { background: transparent; color: var(--neon-cyan); border: 2px solid var(--neon-cyan); }
+        .btn-secondary:hover { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 25px var(--neon-cyan); }
+
+        /* HEADER KOMPUTER */
+        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: rgba(6, 9, 19, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-glow); height: 75px; display: flex; align-items: center; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 0 5%; width: 100%; max-width: 1400px; margin: 0 auto; }
+        .brand-logo { font-size: 1.5rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .brand-logo i { color: var(--neon-blue); filter: drop-shadow(0 0 5px var(--neon-blue)); }
+        .nav-menu { display: flex; gap: 30px; align-items: center; }
+        .nav-link { font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-gray); transition: var(--transition); font-size: 1rem; }
+        .nav-link:hover, .nav-link.active { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+        .menu-toggle { display: none; font-size: 1.6rem; color: var(--neon-blue); cursor: pointer; transition: var(--transition); z-index: 1005; }
+
+        /* HERO - BACKGROUND MOTOR KLASIK */
+        #home { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; padding-top: 80px; background: linear-gradient(to bottom, rgba(6,9,19,0.4), var(--bg-dark)), url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat; }
+        #home::before { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(6, 9, 19, 0.6); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 0 20px; }
+        .hero-title { font-size: 4rem; font-weight: 900; text-transform: uppercase; color: #fff; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0, 240, 255, 0.6); }
+        .hero-title span { color: var(--neon-blue); }
+        .hero-subtitle { font-size: 1.3rem; color: var(--text-gray); margin-bottom: 40px; }
+        .hero-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+
+        /* --- CYBER TV --- */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+        .video-card { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-glow); cursor: pointer; transition: var(--transition); aspect-ratio: 16/9; background: #000; }
+        .video-card:hover { border-color: var(--neon-magenta); box-shadow: 0 0 20px rgba(255, 0, 102, 0.4); transform: scale(1.03); }
+        .video-thumb { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: var(--transition); }
+        .video-card:hover .video-thumb { opacity: 1; filter: brightness(1.2); }
+        .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--text-light); font-size: 3.5rem; text-shadow: 0 0 15px var(--neon-magenta); transition: var(--transition); z-index: 2; pointer-events: none; }
+        .video-card:hover .play-btn { color: var(--neon-magenta); transform: translate(-50%, -50%) scale(1.1); }
+        
+        .video-popup { display: none; position: fixed; z-index: 2500; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 5, 10, 0.98); backdrop-filter: blur(10px); justify-content: center; align-items: center; }
+        .video-popup-content { width: 90%; max-width: 900px; aspect-ratio: 16/9; background: #000; border: 2px solid var(--neon-magenta); box-shadow: 0 0 30px var(--neon-magenta); border-radius: 8px; position: relative; }
+        .video-popup-content iframe { width: 100%; height: 100%; border: none; border-radius: 6px; }
+
+        /* BERITA & GALERI & BLACK MARKET */
+        .news-grid { display: grid; gap: 30px; grid-template-columns: repeat(3, 1fr); }
+        .news-card { overflow: hidden; display: flex; flex-direction: column; height: 100%; }
+        .news-img { width: 100%; height: 200px; object-fit: contain; background: rgba(0,0,0,0.4); border-bottom: 1px solid var(--border-glow); transition: var(--transition); cursor: pointer; }
+        .news-card:hover .news-img { transform: scale(1.05); }
+        .news-body { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+        .news-date { font-size: 0.85rem; color: var(--neon-cyan); margin-bottom: 10px; font-family: 'Orbitron', sans-serif; display: flex; align-items: center; gap: 5px; }
+        .news-card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; color: #fff; line-height: 1.4; }
+        .news-excerpt { color: var(--text-gray); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
+
+        .form-wrapper { max-width: 600px; margin: 0 auto 50px; padding: 30px; display: none; }
+        .input-cyber { width: 100%; padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-glow); color: #fff; font-family: 'Rajdhani'; font-size: 1rem; border-radius: 4px; transition: var(--transition); margin-bottom: 10px; }
+        .input-cyber:focus { outline: none; border-color: var(--neon-cyan); }
+        
+        /* GALERI */
+        .gallery-uploader { max-width: 600px; margin: 0 auto 40px; padding: 30px; text-align: center; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
+        .gallery-filters { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
+        .filter-btn { background: transparent; border: 1px solid var(--text-gray); color: var(--text-gray); padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: var(--transition); font-family: 'Orbitron', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .filter-btn:hover, .filter-btn.active { border-color: var(--neon-cyan); color: var(--bg-dark); background: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 255, 204, 0.4); font-weight: bold; }
+        .tag-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: var(--neon-cyan); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-family: 'Orbitron', sans-serif; border: 1px solid var(--neon-cyan); pointer-events: none; z-index: 10; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 8px rgba(0, 255, 204, 0.2); }
+        select.input-cyber option { background: var(--bg-dark); color: var(--text-light); }
+
+        .cyber-lightbox { display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 5, 10, 0.95); backdrop-filter: blur(10px); justify-content: center; align-items: center; }
+        .lightbox-content { max-width: 90%; max-height: 85vh; border: 2px solid var(--neon-blue); box-shadow: 0 0 30px var(--neon-blue); border-radius: 8px; object-fit: contain; }
+        .lightbox-close { position: absolute; top: 20px; right: 30px; color: var(--neon-magenta); font-size: 3rem; cursor: pointer; text-shadow: 0 0 10px var(--neon-magenta); }
+
+        /* TOAST */
+        .cyber-toast { position: fixed; bottom: -100px; right: 20px; background: rgba(10, 15, 30, 0.95); border-left: 4px solid var(--neon-blue); color: var(--text-light); padding: 15px 20px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); display: flex; align-items: center; gap: 15px; z-index: 9999; backdrop-filter: blur(10px); font-size: 0.9rem; transition: bottom 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .cyber-toast.show { bottom: 20px; }
+        .cyber-toast i { font-size: 1.5rem; color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); }
+
+        footer { background: #03050a; border-top: 1px solid var(--border-glow); padding: 30px 0; text-align: center; }
+
+        @media (max-width: 768px) {
+            .container { width: 92%; padding: 40px 0; }
+            .hero-title { font-size: 2.2rem !important; line-height: 1.2; }
+            .hero-subtitle { font-size: 1rem; margin-bottom: 25px; }
+            .section-title { font-size: 1.8rem !important; margin-bottom: 30px; }
+            .menu-toggle { display: block; position: relative; }
+            .nav-menu { position: fixed; top: 0; right: -100%; width: 75%; max-width: 300px; height: 100vh; background: #0a0f1d; border-left: 2px solid var(--neon-blue); box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7); flex-direction: column; align-items: flex-start; justify-content: flex-start; padding: 100px 30px; gap: 20px; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 1000; }
+            .nav-menu.active { right: 0; }
+            .nav-link { font-size: 1.2rem; display: block; width: 100%; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+            .news-grid, .gallery-grid, .video-grid { grid-template-columns: 1fr !important; gap: 20px; }
+            .gallery-uploader, .form-wrapper { padding: 20px; }
+            .cyber-toast { width: 90%; right: 5%; left: 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a href="#home" class="brand-logo"><i class="fa-solid fa-motorcycle"></i> ELANG<span>BONDOL</span></a>
+            <div class="menu-toggle" id="mobile-menu"><i class="fa-solid fa-bars"></i></div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#cybertv" class="nav-link" style="color:var(--neon-magenta);">Cyber TV</a></li>
+                <li><a href="#berita" class="nav-link">Kabar Bikers</a></li>
+                <li><a href="#galeri" class="nav-link">Galeri</a></li>
+                <li><a href="#blackmarket" class="nav-link" style="color:var(--neon-yellow); text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);">Bikers Market</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">PORTAL CYBER <span>ELANG BONDOL</span></h1>
+            <p class="hero-subtitle">Pusat informasi touring, komunitas motor klasik, dan ruang digital bagi para penunggang besi aspal jalanan.</p>
+            <div class="hero-buttons">
+                <a href="#galeri" class="btn btn-primary"><i class="fa-solid fa-camera"></i> Bagikan Momen</a>
+            </div>
+            
+            <div id="daftar-hadir" class="glass-card" style="margin: 40px auto 0; padding: 20px; max-width: 450px;">
+                <h3 style="color:var(--neon-cyan); margin-bottom:15px; font-size:1.1rem; text-transform:uppercase;"><i class="fa-solid fa-helmet-safety"></i> Bikers di Titik Kumpul (Kopdar) Malam Ini:</h3>
+                <ul id="list-hadir" style="text-align:left; font-size:0.95rem; max-height:150px; overflow-y:auto;"></ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="blackmarket" class="container">
+        <h2 class="section-title" style="background: linear-gradient(45deg, var(--neon-yellow), #ff6600); -webkit-background-clip: text; text-shadow: 0 0 10px rgba(255,204,0,0.2);">Cyber Bikers Market</h2>
+        <div style="text-align: center; margin-bottom: 40px;">
+            <button id="btn-buka-lapak" class="btn btn-secondary" style="border-color: var(--neon-yellow); color: var(--neon-yellow);"><i class="fa-solid fa-store"></i> Buka Lapak Parts / Motor</button>
+        </div>
+        
+        <div id="form-lapak-wrapper" class="glass-card form-wrapper">
+            <h3 style="color:var(--neon-yellow); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-gear"></i> Detail Item / Unit</h3>
+            <form id="form-black-market" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+                <input type="text" id="bm-nama" placeholder="Nama Barang (Cth: Karburator PE28 / Honda CB100)" required class="input-cyber">
+                <input type="number" id="bm-harga" placeholder="Harga (Cth: 500000 - tanpa titik)" required class="input-cyber">
+                <input type="number" id="bm-wa" placeholder="No WhatsApp (Cth: 08123456789)" required class="input-cyber">
+                
+                <label style="display:block; margin-bottom:5px; font-size:0.9rem; color:var(--text-gray);"><i class="fa-solid fa-camera"></i> Foto Item / Motor</label>
+                <input type="file" id="bm-file" accept="image/*" required style="color:var(--text-gray); width:100%;">
+                
+                <textarea id="bm-deskripsi" rows="3" placeholder="Deskripsi kondisi, minus, kelengkapan surat dll..." required class="input-cyber"></textarea>
+                <button type="submit" class="btn btn-primary" style="width: 100%; border-color: var(--neon-yellow); color: var(--neon-yellow);"><i class="fa-solid fa-tags"></i> Posting Jualan</button>
+                <div id="bm-status" style="text-align:center; font-weight:bold; font-size:0.9rem;"></div>
+            </form>
+        </div>
+        
+        <div class="news-grid" id="cyber-market-grid"></div>
+    </section>
+
+    <section id="cybertv" class="container">
+        <h2 class="section-title" style="background: linear-gradient(45deg, var(--neon-magenta), var(--neon-blue)); -webkit-background-clip: text; text-shadow: 0 0 10px rgba(255,0,102,0.2);">Elang Bondol TV</h2>
+        <div class="video-grid" id="cyber-video-grid"></div>
+    </section>
+
+    <section id="berita" class="container">
+        <h2 class="section-title">Kabar & info Bikers</h2>
+        <div style="text-align: center; margin-bottom: 40px;">
+            <button id="btn-buka-form" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i> Tulis Kabar Baru</button>
+        </div>
+        <div id="form-berita-wrapper" class="glass-card form-wrapper">
+            <form id="form-cyber-news" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+                <input type="text" id="news-title" placeholder="Judul Info / Kabar" required class="input-cyber">
+                <label style="display:block; margin-bottom:5px; font-size:0.9rem; color:var(--text-gray);"><i class="fa-solid fa-camera"></i> Ambil Foto / Dokumentasi Jalur</label>
+                <input type="file" id="news-file" accept="image/*" required style="color:var(--text-gray); width:100%;">
+                <textarea id="news-content" rows="4" placeholder="Isi kabar (Info rest area, kondisi jalur, agenda turing makh 500 kata)..." required class="input-cyber"></textarea>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-broadcast-tower"></i> Siarkan Berita</button>
+                <div id="news-status" style="text-align:center; font-weight:bold; font-size:0.9rem;"></div>
+            </form>
+        </div>
+        <div class="news-grid" id="cyber-news-grid"></div>
+    </section>
+
+    <section id="galeri" class="container">
+        <h2 class="section-title">Galeri Komunitas</h2>
+        <div class="gallery-uploader glass-card">
+            <h3 style="color:var(--neon-blue); margin-bottom:15px;"><i class="fa-solid fa-camera-retro"></i> Upload Foto Momen Riding</h3>
+            <form id="form-galeri" style="display: flex; flex-direction: column; gap: 10px;">
+                <label style="display:block; margin-bottom:5px; font-size:0.9rem; color:var(--text-gray); text-align:left;"><i class="fa-solid fa-camera"></i> Pilih Foto Momen / Kamera HP</label>
+                <input type="file" id="galeri-file" accept="image/*" required style="color:var(--text-light); width:100%; margin-bottom:10px;">
+                <select id="galeri-tag" required class="input-cyber" style="cursor: pointer;">
+                    <option value="" disabled selected>-- Pilih Kategori Momen --</option>
+                    <option value="Touring">🏍️ Turing / Riding</option>
+                    <option value="Kopdar">☕ Kopdar / Nongkrong</option>
+                    <option value="Bengkel">🔧 Workshop / Restorasi</option>
+                </select>
+                <input type="text" id="galeri-caption" placeholder="Tulis caption foto..." required class="input-cyber" maxlength="60">
+                <button type="submit" class="btn btn-secondary" style="width:100%;"><i class="fa-solid fa-cloud-arrow-up"></i> Tampilkan di Galeri</button>
+                <div id="galeri-status" style="text-align:center; font-weight:bold; font-size:0.9rem;"></div>
+            </form>
+        </div>
+        <div class="gallery-filters" id="gallery-filters">
+            <button class="filter-btn active" data-filter="all">Semua</button>
+            <button class="filter-btn" data-filter="Touring">Touring</button>
+            <button class="filter-btn" data-filter="Kopdar">Kopdar</button>
+            <button class="filter-btn" data-filter="Bengkel">Restorasi</button>
+        </div>
+        <div class="gallery-grid" id="cyber-gallery-grid"></div>
+    </section>
+
+    <footer>
+        <div class="footer-logo"><h3>ELANG<span>BONDOL</span></h3></div>
+        <div class="footer-credits" style="font-size: 0.85rem; color: var(--text-gray); margin-top: 10px; letter-spacing: 1px; font-family: 'Orbitron', sans-serif;">
+            CREATED BY <span style="color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); font-weight: bold;">HENDRI</span>
+        </div>
+    </footer>
+
+    <div id="video-lightbox" class="video-popup">
+        <span class="lightbox-close" id="video-close-btn" style="color:var(--neon-magenta); text-shadow:0 0 10px var(--neon-magenta);">×</span>
+        <div class="video-popup-content"><iframe id="video-iframe" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>
+    </div>
+    <div id="lightbox-container" class="cyber-lightbox">
+        <span class="lightbox-close" id="lightbox-close-btn">×</span>
+        <img class="lightbox-content" id="lightbox-img" src="">
+    </div>
+    <div id="checkin-gate" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(6, 9, 19, 0.96); z-index:9999; justify-content:center; align-items:center; backdrop-filter:blur(15px);">
+        <div class="glass-card" style="width:90%; max-width:400px; padding:30px; text-align:center; border-color:var(--neon-blue);">
+            <h2 style="color:var(--neon-blue); margin-bottom:15px; font-size:1.6rem;"><i class="fa-solid fa-id-card"></i> ID BIKERS WARGA</h2>
+            <p style="margin-bottom:20px; color:var(--text-gray); font-size:0.95rem; line-height:1.5;">Silakan masukkan nama panggilan / nomor registrasi Anda sebelum ikut berpartisipasi.</p>
+            <input type="text" id="checkin-name" placeholder="Nama Panggilan Anda..." class="input-cyber" style="text-align:center; font-weight:bold; letter-spacing:1px;">
+            <button onclick="simpanIdentitas()" class="btn btn-primary" style="width:100%; margin-top:10px;">SIMPAN & MASUK PORTAL</button>
+        </div>
+    </div>
+    <div id="cyber-toast" class="cyber-toast">
+        <i id="toast-icon" class="fa-solid fa-bell"></i>
+        <div id="toast-message" style="font-weight: 600; letter-spacing: 0.5px;">Ada update baru!</div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dgf3shxpf/image/upload"; 
+        const CLOUDINARY_UPLOAD_PRESET = "preset_elang";
+
+        // =========================================================================
+        // MASUKKAN KODE FIREBASE CONFIG BARU KAMU YANG DARI KOTAK HITAM DI SINI:
+        // =========================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZL_f-9q162GXCXPKN0YB37I7_EChNnis",
+authDomain: "elang-bondol-cyber.firebaseapp.com",
+databaseURL: "https://elang-bondol-cyber-default-rtdb.asia-southeast1.firebasedatabase.app",
+projectId: "elang-bondol-cyber",
+storageBucket: "elang-bondol-cyber.firebasestorage.app",
+messagingSenderId: "1028869939674",
+appId: "1:1028869939674:web:7b51fa4af47fe56059e0e3"
+        };
+        // =========================================================================
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        let sistemSiap = false; setTimeout(() => { sistemSiap = true; }, 3000); 
+
+        function tampilkanNotifikasi(pesan, iconClass = "fa-bell", warnaNeon = "var(--neon-blue)") {
+            if (!sistemSiap) return;
+            const toast = document.getElementById('cyber-toast');
+            document.getElementById('toast-message').innerText = pesan;
+            document.getElementById('toast-icon').className = `fa-solid ${iconClass}`;
+            toast.style.borderLeftColor = warnaNeon; toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 4000);
+        }
+
+        const mobileMenu = document.getElementById('mobile-menu'); const navMenu = document.querySelector('.nav-menu');
+        mobileMenu.addEventListener('click', () => { navMenu.classList.toggle('active'); mobileMenu.querySelector('i').className = navMenu.classList.contains('active') ? "fa-solid fa-xmark" : "fa-solid fa-bars"; });
+        document.querySelectorAll('.nav-link').forEach(link => { link.addEventListener('click', () => { navMenu.classList.remove('active'); mobileMenu.querySelector('i').className = "fa-solid fa-bars"; }); });
+
+        const lightbox = document.getElementById('lightbox-container'); const lightboxImg = document.getElementById('lightbox-img');
+        function bukaLightbox(e) { lightbox.style.display = 'flex'; lightboxImg.src = e.target.src; }
+        document.getElementById('lightbox-close-btn').addEventListener('click', () => lightbox.style.display = 'none');
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.style.display = 'none'; });
+        function aktifkanKlikGambar() { document.querySelectorAll('.gal-img, .news-img, .market-img').forEach(img => { img.removeEventListener('click', bukaLightbox); img.addEventListener('click', bukaLightbox); }); }
+
+        function getTanggalHariIni() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+        function periksaSesi() {
+            let namaSaved = localStorage.getItem("namaWargaPB17");
+            if (!namaSaved) { document.getElementById('checkin-gate').style.display = 'flex'; return false; }
+            if (!sessionStorage.getItem("sudahAbsen_" + getTanggalHariIni())) absenOtomatisHariIni(namaSaved); return true;
+        }
+
+        function simpanIdentitas() {
+            const name = document.getElementById('checkin-name').value;
+            if(name.trim() === "") { alert("Mohon isi nama Anda!"); return; }
+            if (navigator.geolocation) {
+                alert("Sistem meminta perizinan lokasi browser untuk absensi kopdar. Mohon tekan 'Izinkan/Allow'.");
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        localStorage.setItem("namaWargaPB17", name); sessionStorage.setItem("sudahAbsen_" + getTanggalHariIni(), "ya");
+                        database.ref('daftar_hadir/' + getTanggalHariIni()).push({ nama: name, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }), lokasi: `https://www.google.com/maps?q=$${position.coords.latitude},${position.coords.longitude}` });
+                        document.getElementById('checkin-gate').style.display = 'none'; alert("Halo " + name + "! Identitas bikers tersimpan.");
+                    },
+                    (error) => {
+                        localStorage.setItem("namaWargaPB17", name); sessionStorage.setItem("sudahAbsen_" + getTanggalHariIni(), "ya");
+                        database.ref('daftar_hadir/' + getTanggalHariIni()).push({ nama: name, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }), lokasi: "Izin Ditolak" });
+                        document.getElementById('checkin-gate').style.display = 'none';
+                    }
+                );
+            }
+        }
+
+        function absenOtomatisHariIni(name) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    sessionStorage.setItem("sudahAbsen_" + getTanggalHariIni(), "ya");
+                    database.ref('daftar_hadir/' + getTanggalHariIni()).push({ nama: name, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }), lokasi: `https://www.google.com/maps?q=$${position.coords.latitude},${position.coords.longitude}` });
+                }, () => {
+                    sessionStorage.setItem("sudahAbsen_" + getTanggalHariIni(), "ya");
+                    database.ref('daftar_hadir/' + getTanggalHariIni()).push({ nama: name, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }), lokasi: "Tanpa Lokasi" });
+                });
+            }
+        }
+
+        database.ref('daftar_hadir/' + getTanggalHariIni()).on('value', (snapshot) => {
+            const list = document.getElementById('list-hadir'); list.innerHTML = "";
+            snapshot.forEach((child) => {
+                const p = child.val();
+                list.innerHTML += `<li style="margin-bottom:8px; display:flex; align-items:center; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:5px;"><i class="fa-solid fa-motorcycle" style="color:var(--neon-blue); margin-right:8px;"></i> <span style="font-weight:700;">${p.nama}</span> <span style="color:var(--text-gray); font-size:0.8rem; margin-left:auto;">${p.waktu} WIB</span></li>`;
+            });
+        });
+
+        database.ref('daftar_hadir/' + getTanggalHariIni()).on('child_added', (snapshot) => {
+            if (sistemSiap) tampilkanNotifikasi(`${snapshot.val().nama} merapat ke kopdar!`, "fa-motorcycle", "var(--neon-cyan)");
+        });
+
+        /* --- SCRIPT BIKERS MARKET --- */
+        const marketGrid = document.getElementById('cyber-market-grid');
+        const formLapakWrapper = document.getElementById('form-lapak-wrapper');
+        
+        document.getElementById('btn-buka-lapak').addEventListener('click', () => { 
+            formLapakWrapper.style.display = formLapakWrapper.style.display === 'none' ? 'block' : 'none'; 
+        });
+
+        database.ref('blackmarket_rt04').on('child_added', (snapshot) => {
+            tampilkanNotifikasi("Ada barang lapak baru masuk!", "fa-store", "var(--neon-yellow)");
+            const data = snapshot.val();
+            const card = document.createElement('div');
+            card.className = 'news-card glass-card';
+            
+            const hargaRupiah = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(data.harga);
+            
+            card.innerHTML = `
+                <img src="${data.imageUrl}" class="market-img news-img">
+                <div class="news-body">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+                        <h3 class="news-card-title" style="margin-bottom:0; color:var(--neon-yellow);">${data.namaBarang}</h3>
+                    </div>
+                    <div style="font-size:1.4rem; font-family:'Orbitron', sans-serif; font-weight:bold; color:#fff; margin-bottom:15px;">${hargaRupiah}</div>
+                    <p class="news-excerpt" style="flex-grow:1;">${data.deskripsi}</p>
+                    <div style="font-size:0.85rem; color:var(--text-gray); margin-bottom:15px;"><i class="fa-solid fa-user-tag"></i> Penjual: <b>${data.penjual}</b></div>
+                    <a href="https://wa.me/${data.wa}?text=Halo%20${data.penjual},%20saya%20tertarik%20dengan%20${data.namaBarang}%20yang%20dijual%20di%20Cyber%20Market%20Elang%20Bondol." target="_blank" class="btn" style="background:#25D366; color:#fff; width:100%; text-shadow:none; box-shadow:0 0 10px rgba(37,211,102,0.3); border:none;">
+                        <i class="fa-brands fa-whatsapp" style="font-size:1.2rem;"></i> Chat WhatsApp
+                    </a>
+                </div>
+            `;
+            marketGrid.insertBefore(card, marketGrid.firstChild);
+            aktifkanKlikGambar();
+        });
+
+        document.getElementById('form-black-market').addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            if (!periksaSesi()) return;
+            
+            const status = document.getElementById('bm-status'); 
+            status.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah...`;
+            
+            const file = document.getElementById('bm-file').files[0];
+            const formData = new FormData(); formData.append('file', file); formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            
+            try {
+                const res = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData }); 
+                const dataUpload = await res.json();
+                if (dataUpload.secure_url) {
+                    let waNum = document.getElementById('bm-wa').value.trim();
+                    if(waNum.startsWith('0')) { waNum = '62' + waNum.substring(1); }
+                    else if(waNum.startsWith('+62')) { waNum = waNum.substring(1); }
+
+                    database.ref('blackmarket_rt04').push({ 
+                        namaBarang: document.getElementById('bm-nama').value, 
+                        harga: document.getElementById('bm-harga').value, 
+                        wa: waNum,
+                        deskripsi: document.getElementById('bm-deskripsi').value, 
+                        imageUrl: dataUpload.secure_url,
+                        penjual: localStorage.getItem("namaWargaPB17"),
+                        timestamp: Date.now()
+                    });
+                    
+                    status.innerHTML = `<span style="color:var(--neon-yellow);">Lapak Berhasil Dibuka!</span>`; 
+                    document.getElementById('form-black-market').reset();
+                    setTimeout(() => { formLapakWrapper.style.display = 'none'; status.innerHTML = ""; }, 2000);
+                }
+            } catch (error) { status.innerHTML = "Gagal upload gambar."; }
+        });
+
+        /* --- SCRIPT TV, BERITA, GALERI --- */
+        const daftarVideo = ["h6tY8Hz9v9M", "h32XvFSD9Do", "UE1TKZjAdio"];
+        const videoGrid = document.getElementById('cyber-video-grid');
+        const videoLightbox = document.getElementById('video-lightbox');
+        const videoIframe = document.getElementById('video-iframe');
+        daftarVideo.forEach(id => {
+            const card = document.createElement('div'); card.className = 'video-card';
+            card.innerHTML = `<img src="https://img.youtube.com/vi/${id}/maxresdefault.jpg" class="video-thumb" onerror="this.src='https://img.youtube.com/vi/${id}/hqdefault.jpg'"><i class="fa-brands fa-youtube play-btn"></i>`;
+            card.addEventListener('click', () => { videoIframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`; videoLightbox.style.display = 'flex'; });
+            videoGrid.appendChild(card);
+        });
+        document.getElementById('video-close-btn').addEventListener('click', () => { videoLightbox.style.display = 'none'; videoIframe.src = ""; });
+        videoLightbox.addEventListener('click', (e) => { if (e.target === videoLightbox) { videoLightbox.style.display = 'none'; videoIframe.src = ""; } });
+
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active');
+                const filterValue = btn.getAttribute('data-filter'); const items = document.querySelectorAll('.gallery-item');
+                items.forEach(item => { item.style.display = (filterValue === 'all' || item.getAttribute('data-tag'] === filterValue) ? 'block' : 'none'; });
+            });
+        });
+
+        const galleryGrid = document.getElementById('cyber-gallery-grid');
+        database.ref('galeri_rt04').on('child_added', (snapshot) => {
+            tampilkanNotifikasi("Foto baru di Galeri!", "fa-image", "var(--neon-cyan)");
+            const data = snapshot.val(); const photoId = snapshot.key; const tagMomen = data.tag || 'Kopdar'; 
+            const item = document.createElement('div'); item.className = 'glass-card gallery-item'; item.setAttribute('data-tag', tagMomen); item.style.padding = "15px";
+            item.innerHTML = `<span class="tag-badge">${tagMomen}</span><img src="${data.url}" class="gal-img" style="width:100%; height:200px; object-fit:contain; background:rgba(0,0,0,0.3); border-radius:8px; cursor:pointer;"><div style="padding:12px 0; font-weight:700; color:var(--neon-blue); font-size:1.1rem; border-bottom:1px solid #222;">${data.caption}</div><div class="comment-section" style="padding-top:10px;"><div id="comment-list-${photoId}" style="font-size:0.85rem; margin-bottom:10px; max-height:120px; overflow-y:auto; text-align:left; padding-right:5px;"></div><div style="display:flex; gap:5px;"><input type="text" id="input-comment-${photoId}" placeholder="Tulis komentar publik..." class="input-cyber" style="padding:8px; font-size:0.85rem; margin-bottom:0; flex-grow:1;"><button onclick="kirimKomentar('${photoId}')" class="btn btn-primary" style="padding:0 15px; font-size:0.8rem;"><i class="fa-solid fa-paper-plane"></i></button></div></div>`;
+            galleryGrid.insertBefore(item, galleryGrid.firstChild);
+            database.ref('galeri_rt04/' + photoId + '/comments').on('child_added', (cSnap) => {
+                tampilkanNotifikasi("Komentar baru masuk!", "fa-comments", "var(--neon-magenta)");
+                const comment = cSnap.val(); const list = document.getElementById('comment-list-' + photoId);
+                list.innerHTML += `<div style="margin-bottom:6px; line-height:1.3;"><b style="color:var(--neon-cyan);">${comment.nama}:</b> <span style="color:#ddd;">${comment.text}</span></div>`; list.scrollTop = list.scrollHeight;
+            });
+            aktifkanKlikGambar();
+        });
+
+        function kirimKomentar(photoId) {
+            if (!periksaSesi()) return; const commentInput = document.getElementById('input-comment-' + photoId); if (commentInput.value.trim() === "") return;
+            database.ref('galeri_rt04/' + photoId + '/comments').push({ nama: localStorage.getItem("namaWargaPB17"), text: commentInput.value, timestamp: Date.now() }); commentInput.value = ""; 
+        }
+
+        document.getElementById('form-galeri').addEventListener('submit', async (e) => {
+            e.preventDefault(); if (!periksaSesi()) return;
+            const status = document.getElementById('galeri-status'); status.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memproses Cloud...`;
+            const file = document.getElementById('galeri-file').files[0]; const caption = document.getElementById('galeri-caption').value; const tagValue = document.getElementById('galeri-tag').value;
+            const formData = new FormData(); formData.append('file', file); formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            try {
+                const res = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData }); const dataUpload = await res.json();
+                if(dataUpload.secure_url) { database.ref('galeri_rt04').push({ url: dataUpload.secure_url, caption: caption, tag: tagValue }); status.innerHTML = `<span style="color:var(--neon-cyan);">Sukses Terunggah!</span>`; document.getElementById('form-galeri').reset(); setTimeout(() => status.innerHTML = "", 2000); }
+            } catch (error) { status.innerHTML = "Gagal koneksi."; }
+        });
+
+        const newsGrid = document.getElementById('cyber-news-grid'); const formBeritaWrapper = document.getElementById('form-berita-wrapper');
+        document.getElementById('btn-buka-form').addEventListener('click', () => { formBeritaWrapper.style.display = formBeritaWrapper.style.display === 'none' ? 'block' : 'none'; });
+
+        database.ref('berita_rt04').on('child_added', (snapshot) => {
+            tampilkanNotifikasi("Kabar bikers terbaru disiarkan!", "fa-newspaper", "var(--neon-blue)");
+            const data = snapshot.val(); const card = document.createElement('div'); card.className = 'news-card glass-card';
+            card.innerHTML = `<img src="${data.imageUrl}" class="news-img"><div class="news-body"><div class="news-date"><i class="fa-regular fa-calendar"></i> ${data.date}</div><h3 class="news-card-title">${data.title}</h3><p class="news-excerpt">${data.content}</p></div>`;
+            newsGrid.insertBefore(card, newsGrid.firstChild); aktifkanKlikGambar();
+        });
+
+        document.getElementById('form-cyber-news').addEventListener('submit', async (e) => {
+            e.preventDefault(); if (!periksaSesi()) return;
+            const status = document.getElementById('news-status'); status.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyiarkan...`;
+            const file = document.getElementById('news-file').files[0]; const formData = new FormData(); formData.append('file', file); formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            try {
+                const res = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData }); const dataUpload = await res.json();
+                if (dataUpload.secure_url) {
+                    database.ref('berita_rt04').push({ title: document.getElementById('news-title').value, date: new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }), content: document.getElementById('news-content').value, imageUrl: dataUpload.secure_url });
+                    status.innerHTML = `<span style="color:var(--neon-cyan);">Berhasil Disiarkan!</span>`; document.getElementById('form-cyber-news').reset(); setTimeout(() => { formBeritaWrapper.style.display = 'none'; status.innerHTML = ""; }, 2000);
+                }
+            } catch (error) { status.innerHTML = "Gagal."; }
+        });
+
+        /* --- PWA (PROGRESSIVE WEB APP) --- */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('[Cyber System] PWA Sukses!'))
+                .catch(err => console.log('[Cyber System] PWA Gagal:', err));
+            });
+        }
+    </script>
+</body>
+</html>
