@@ -270,12 +270,12 @@
         // =========================================================================
         const firebaseConfig = {
             apiKey: "AIzaSyCZL_f-9q162GXCXPKN0YB37I7_EChNnis",
-authDomain: "elang-bondol-cyber.firebaseapp.com",
-databaseURL: "https://elang-bondol-cyber-default-rtdb.asia-southeast1.firebasedatabase.app",
-projectId: "elang-bondol-cyber",
-storageBucket: "elang-bondol-cyber.firebasestorage.app",
-messagingSenderId: "1028869939674",
-appId: "1:1028869939674:web:7b51fa4af47fe56059e0e3"
+            authDomain: "elang-bondol-cyber.firebaseapp.com",
+            databaseURL: "https://elang-bondol-cyber-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "elang-bondol-cyber",
+            storageBucket: "elang-bondol-cyber.firebasestorage.app",
+            messagingSenderId: "1028869939674",
+            appId: "1:1028869939674:web:7b51fa4af47fe56059e0e3"
         };
         // =========================================================================
 
@@ -318,7 +318,7 @@ appId: "1:1028869939674:web:7b51fa4af47fe56059e0e3"
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         localStorage.setItem("namaWargaPB17", name); sessionStorage.setItem("sudahAbsen_" + getTanggalHariIni(), "ya");
-                        database.ref('daftar_hadir/' + getTanggalHariIni()).push({ nama: name, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }), lokasi: `https://www.google.com/maps?q=$${position.coords.latitude},${position.coords.longitude}` });
+                        database.ref('daftar_hadir/' + getTanggalHariIni()).push({ nama: name, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }), lokasi: `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}` });
                         document.getElementById('checkin-gate').style.display = 'none'; alert("Halo " + name + "! Identitas bikers tersimpan.");
                     },
                     (error) => {
@@ -334,7 +334,7 @@ appId: "1:1028869939674:web:7b51fa4af47fe56059e0e3"
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((position) => {
                     sessionStorage.setItem("sudahAbsen_" + getTanggalHariIni(), "ya");
-                    database.ref('daftar_hadir/' + getTanggalHariIni()).push({ nama: name, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }), lokasi: `https://www.google.com/maps?q=$${position.coords.latitude},${position.coords.longitude}` });
+                    database.ref('daftar_hadir/' + getTanggalHariIni()).push({ nama: name, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }), lokasi: `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}` });
                 }, () => {
                     sessionStorage.setItem("sudahAbsen_" + getTanggalHariIni(), "ya");
                     database.ref('daftar_hadir/' + getTanggalHariIni()).push({ nama: name, waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }), lokasi: "Tanpa Lokasi" });
@@ -471,26 +471,21 @@ appId: "1:1028869939674:web:7b51fa4af47fe56059e0e3"
             e.preventDefault(); if (!periksaSesi()) return;
             const status = document.getElementById('galeri-status'); status.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memproses Cloud...`;
             
-            // --- PERBAIKAN DI SINI ---
-            // Menggunakan ID yang benar dari HTML: galeri-file
             const file = document.getElementById('galeri-file').files[0]; 
             const caption = document.getElementById('galeri-caption').value; 
             const tagValue = document.getElementById('galeri-tag').value;
             
-            // Tambahan pengecekan file
             if(!file) {
                 status.innerHTML = `<span style="color:red;">Pilih file foto dulu!</span>`;
                 setTimeout(() => status.innerHTML = "", 3000);
                 return;
             }
-            // --------------------------
 
             const formData = new FormData(); formData.append('file', file); formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
             try {
                 const res = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData }); const dataUpload = await res.json();
                 if(dataUpload.secure_url) { database.ref('galeri_rt04').push({ url: dataUpload.secure_url, caption: caption, tag: tagValue, timestamp: Date.now() }); status.innerHTML = `<span style="color:var(--neon-cyan);">Sukses Terunggah!</span>`; document.getElementById('form-galeri').reset(); setTimeout(() => status.innerHTML = "", 2000); }
                 else {
-                    // Tangani error dari Cloudinary
                     status.innerHTML = `<span style="color:red;">Upload gagal.</span>`;
                     console.error("Cloudinary Error:", dataUpload);
                     setTimeout(() => status.innerHTML = "", 3000);
